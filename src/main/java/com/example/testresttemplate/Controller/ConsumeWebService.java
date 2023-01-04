@@ -1,0 +1,29 @@
+package com.example.testresttemplate.Controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.Arrays;
+
+@RestController
+public class ConsumeWebService {
+    @Autowired
+    RestTemplate restTemplate;
+    @RequestMapping(value= "/test")
+    @GetMapping()
+    public String getProductList(){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        HttpEntity<String> entity = new HttpEntity<String>(headers);
+
+        return restTemplate.exchange("http://192.168.1.133:9200/test-2023.01.02/_search?q=*", HttpMethod.GET, entity, String.class).getBody();
+    }
+
+}
